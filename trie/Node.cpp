@@ -1,32 +1,17 @@
 #include "Node.h"
 #include <cstring>
 #include <stdexcept>
+#include <iostream>
 namespace trie
 {
-    template <typename T>
-    Leaf<T>::Leaf(byte *key, int key_len, int start, T value) : path_len(key_len), value(value)
-    {
-        type = node_type::LEAF;
-        path = new byte[key_len];
-        memcpy(path, key + start, key_len);
-    };
-
-    template <typename T>
-    Leaf<T>::Leaf(byte *key, int key_len, T value) : path_len(key_len)
-    {
-        type = node_type::LEAF;
-        path = new byte[key_len];
-        memcpy(path, key, key_len);
-    }
-
-    Extension::Extension(byte *key, int key_len) : leaves(0), path_len(key_len), next(nullptr)
+    Extension::Extension(byte *key, int key_len) : path_len(key_len), next(nullptr)
     {
         path = new byte[key_len];
         memcpy(path, key, key_len);
         type = node_type::EXTENSION;
     };
 
-    Extension::Extension(byte *key, int key_len, int start) : leaves(0), path_len(key_len), next(nullptr)
+    Extension::Extension(byte *key, int key_len, int start) : path_len(key_len), next(nullptr)
     {
         path = new byte[key_len];
         memcpy(path, key + start, key_len);
@@ -71,7 +56,14 @@ namespace trie
             this->children[loc] = son;
             break;
         }
+        case node_type::VALUE:
+        {
+            ++this->leaves;
+            this->children[loc] = son;
+            break;
         }
+        }
+        this->children[loc] = son;
         return true;
     };
 

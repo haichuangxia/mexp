@@ -20,9 +20,9 @@ namespace trie
             return -1;
         if (one == nullptr || two == nullptr)
             throw std::invalid_argument("The pointer can`t be nullptr");
-        for (int i = 0; i < start_one; ++i)
+        for (int i = 0; i < len; ++i)
         {
-            if (*(one + i) != *(two + start_two + i))
+            if (*(one + start_one + i) != *(two + start_two + i))
                 return i;
         }
         return -1;
